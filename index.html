@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Engasjerende læring</title>
+<meta name="description" content="Faglige perspektiver og ressurser for engasjement, dialog og læringsdesign i informasjonsarbeidet.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============ Tokens ============ */
+:root{
+  /* Grunnfarger */
+  --paper:#FBF9F7;
+  --ink:#3E3238;
+  --body:#5C5055;
+  --quiet:#82767B;
+  --hair:#E8E0DB;
+  --white:#FFFFFF;
+
+  /* Seksjonsfarger: flate + dyp */
+  --rose:#F7E8EF;     --rose-deep:#B75E88;
+  --blue:#E7EEF7;     --blue-deep:#5A7396;
+  --yellow:#FBF2CE;   --yellow-deep:#A98400;
+  --aqua:#E2F3F1;     --aqua-deep:#287D7A;
+  --peach:#F9E8DA;    --peach-deep:#B9672F;
+  --lavender:#EEE8F6; --lavender-deep:#70539A;
+
+  /* Farger som går igjen i presentasjonen og ressursene */
+  --dim-atferd:#D6AA10;
+  --dim-emo:#C95890;
+  --dim-kog:#309C99;
+  --dim-agent:#D97531;
+  --dim-femte:#74569C;
+
+  /* Form */
+  --wrap:1080px;
+  --gutter:28px;
+  --r-lg:24px;
+  --r-md:16px;
+  --r-sm:14px;
+  --card-bg:rgba(255,255,255,.62);
+  --shadow:0 8px 28px rgba(63,48,56,.07);
+
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Jost',system-ui,sans-serif;
+}
+
+/* ============ Grunnlag ============ */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--body);
+  font-family:var(--sans);
+  font-weight:300;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:4px;border-radius:4px}
+h1,h2,h3{margin:0;color:var(--ink);font-weight:500}
+h1,h2{font-family:var(--serif)}
+p{margin:0}
+
+.wrap{
+  max-width:var(--wrap);
+  margin-inline:auto;
+  padding-inline:var(--gutter);
+}
+
+/* ============ Topp ============ */
+.sitebar{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:20px;
+  padding-top:24px;
+  padding-bottom:12px;
+}
+.brand{
+  font-family:var(--serif);
+  font-size:1.35rem;
+  font-weight:500;
+  color:var(--ink);
+  text-decoration:none;
+}
+.context{
+  color:var(--quiet);
+  font-size:.86rem;
+  text-align:right;
+}
+
+.hero{padding-top:58px;padding-bottom:38px}
+.eyebrow{
+  text-transform:uppercase;
+  letter-spacing:.13em;
+  font-size:.76rem;
+  font-weight:500;
+  color:var(--rose-deep);
+  margin-bottom:10px;
+}
+h1{
+  font-size:clamp(3rem,8vw,6.4rem);
+  line-height:.92;
+  letter-spacing:-.025em;
+  max-width:850px;
+}
+.lead{
+  max-width:760px;
+  margin-top:26px;
+  font-size:1.12rem;
+  line-height:1.7;
+}
+.hero::after{
+  content:"";
+  display:block;
+  height:1px;
+  margin-top:38px;
+  background:var(--hair);
+}
+
+/* ============ Innholdsnavigasjon (følger med ved scrolling) ============ */
+.jump{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(251,249,247,.9);
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+  margin-bottom:40px;
+}
+.jump ul{
+  list-style:none;
+  margin:0 auto;
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  padding-top:12px;
+  padding-bottom:12px;
+}
+.jump a{
+  display:block;
+  text-decoration:none;
+  white-space:nowrap;
+  border:1px solid var(--hair);
+  background:rgba(255,255,255,.7);
+  color:var(--ink);
+  padding:8px 13px;
+  border-radius:999px;
+  font-size:.88rem;
+  transition:background .18s ease, transform .18s ease;
+}
+.jump a:hover{background:var(--white);transform:translateY(-1px)}
+
+/* ============ Seksjoner ============ */
+main{padding-bottom:80px}
+
+.section{
+  --bg:var(--white);
+  --accent:var(--ink);
+  background:var(--bg);
+  border-radius:var(--r-lg);
+  padding:clamp(26px,5vw,52px);
+  margin-bottom:22px;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;          /* holder pynt-sirkelen bak innholdet */
+  scroll-margin-top:84px;     /* så overskriften ikke havner under navigasjonen */
+}
+.section::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:240px;
+  height:240px;
+  right:-110px;
+  top:-120px;
+  border-radius:50%;
+  background:rgba(255,255,255,.34);
+}
+.rose    {--bg:var(--rose);     --accent:var(--rose-deep)}
+.blue    {--bg:var(--blue);     --accent:var(--blue-deep)}
+.yellow  {--bg:var(--yellow);   --accent:var(--yellow-deep)}
+.aqua    {--bg:var(--aqua);     --accent:var(--aqua-deep)}
+.peach   {--bg:var(--peach);    --accent:var(--peach-deep)}
+.lavender{--bg:var(--lavender); --accent:var(--lavender-deep)}
+
+.kicker{
+  font-size:.75rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-weight:500;
+  color:var(--accent);
+  margin-bottom:8px;
+}
+.section h2{
+  font-size:clamp(2rem,5vw,3.25rem);
+  line-height:1.02;
+  max-width:680px;
+}
+.copy{
+  max-width:760px;
+  margin-top:18px;
+  font-size:1.02rem;
+}
+.copy p + p{margin-top:14px}
+
+/* ============ Kort (felles komponent) ============ */
+.cards{
+  --cols:2;
+  list-style:none;
+  padding:0;
+  margin:24px 0 0;
+  display:grid;
+  grid-template-columns:repeat(var(--cols),minmax(0,1fr));
+  gap:10px;
+}
+.cards--3{--cols:3}
+
+.card{
+  background:var(--card-bg);
+  border-radius:var(--r-sm);
+  padding:16px;
+  font-size:.9rem;
+  line-height:1.45;
+}
+.card strong{
+  display:block;
+  color:var(--ink);
+  font-weight:500;
+  font-size:1rem;
+  margin-bottom:4px;
+}
+
+/* De fire engasjementsdimensjonene får samme farger som i presentasjonen */
+.card[data-dim]{border-left:4px solid var(--dim)}
+.card[data-dim="atferd"]{--dim:var(--dim-atferd)}
+.card[data-dim="emo"]   {--dim:var(--dim-emo)}
+.card[data-dim="kog"]   {--dim:var(--dim-kog)}
+.card[data-dim="agent"] {--dim:var(--dim-agent)}
+
+/* ============ Klafkis spørsmål ============ */
+.klafki{
+  list-style:none;
+  padding:0;
+  margin:24px 0 0;
+  display:grid;
+  gap:8px;
+}
+.klafki li{
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:14px;
+  align-items:start;
+  background:var(--card-bg);
+  border-radius:var(--r-sm);
+  padding:12px 14px;
+}
+.klafki .num{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:var(--c);
+  color:#fff;
+  font-weight:500;
+}
+.klafki li:nth-child(1){--c:var(--dim-atferd)}
+.klafki li:nth-child(2){--c:var(--dim-emo)}
+.klafki li:nth-child(3){--c:var(--dim-kog)}
+.klafki li:nth-child(4){--c:var(--dim-agent)}
+.klafki li:nth-child(5){--c:var(--dim-femte)}
+.klafki strong{display:block;color:var(--ink);font-weight:500}
+.klafki span{display:block;font-size:.88rem;margin-top:2px}
+
+/* ============ Ressurslenker ============ */
+.resources{margin-top:26px}
+.resource{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(100,80,90,.12);
+  border-radius:var(--r-md);
+  padding:18px;
+  text-decoration:none;
+  transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+}
+.resource:hover{
+  transform:translateY(-2px);
+  background:var(--white);
+  box-shadow:var(--shadow);
+}
+.resource-type{
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-weight:500;
+  color:var(--quiet);
+  margin-bottom:6px;
+}
+.resource h3{
+  font-family:var(--sans);
+  font-size:1.02rem;
+  margin-bottom:5px;
+}
+.resource p{font-size:.9rem;line-height:1.48}
+.resource-arrow{
+  display:inline-block;
+  margin-top:auto;
+  padding-top:11px;
+  color:var(--accent);
+  font-size:.9rem;
+  font-weight:500;
+}
+
+/* ============ Avslutning og litteratur ============ */
+.closing{
+  margin-top:42px;
+  padding-top:38px;
+  border-top:1px solid var(--hair);
+  display:grid;
+  grid-template-columns:1fr 1.4fr;
+  gap:30px;
+}
+.closing h2{font-size:2.2rem;line-height:1.05}
+
+.literature{
+  margin-top:46px;
+  padding-top:38px;
+  border-top:1px solid var(--hair);
+  scroll-margin-top:84px;
+}
+.literature .kicker{color:var(--quiet)}
+.literature h2{
+  font-size:clamp(2rem,5vw,3rem);
+  line-height:1.05;
+  margin-bottom:24px;
+}
+.references{
+  list-style:none;
+  padding:0;
+  margin:0;
+  max-width:900px;
+}
+.references li{
+  margin-bottom:14px;
+  padding-left:1.7rem;
+  text-indent:-1.7rem;
+  font-size:.91rem;
+  line-height:1.55;
+}
+.references a{
+  color:var(--rose-deep);
+  text-decoration-thickness:1px;
+  text-underline-offset:2px;
+  overflow-wrap:anywhere;
+}
+
+footer{
+  padding-bottom:36px;
+  color:var(--quiet);
+  font-size:.78rem;
+}
+
+/* ============ Mobil ============ */
+@media (max-width:760px){
+  :root{--gutter:16px}
+  .context{display:none}
+  .hero{padding-top:44px;padding-bottom:28px}
+  .jump{margin-bottom:28px}
+  .jump ul{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .jump ul::-webkit-scrollbar{display:none}
+  .section{border-radius:18px;padding:26px 20px}
+  .cards,.cards--3{--cols:1}
+  .closing{grid-template-columns:1fr;gap:12px}
+}
+
+/* ============ Redusert bevegelse ============ */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{transition:none !important}
+}
+
+/* ============ Utskrift ============ */
+@media print{
+  .jump{display:none}
+  .section{break-inside:avoid}
+  .section::after{display:none}
+}
+</style>
+</head>
+
+<body>
+  <div class="sitebar wrap">
+    <a class="brand" href="index.html">Mari-Ann Letnes</a>
+    <div class="context">Samling for informasjonsansvarlige i asylmottak · oktober 2026</div>
+  </div>
+
+  <header class="hero wrap">
+    <div class="eyebrow">Når informasjon skal bli til læring</div>
+    <h1>Engasjerende læring</h1>
+    <p class="lead">
+      Informasjonsarbeid handler om å gjøre et innhold forståelig og mulig å arbeide med.
+      Det krever oppmerksomhet på menneskene i rommet, hva innholdet skal åpne for,
+      hvordan samtalen organiseres, og hva deltakerne får anledning til å gjøre med det de møter.
+    </p>
+  </header>
+
+  <nav class="jump" aria-label="Innhold på siden">
+    <ul class="wrap">
+      <li><a href="#rommet">Å etablere rommet</a></li>
+      <li><a href="#relasjon">Å arbeide relasjonelt</a></li>
+      <li><a href="#engasjement">Å forstå engasjement</a></li>
+      <li><a href="#dialog">Å åpne for dialog</a></li>
+      <li><a href="#innhold">Å analysere innholdet</a></li>
+      <li><a href="#design">Å designe for læring</a></li>
+      <li><a href="#litteratur">Litteratur</a></li>
+    </ul>
+  </nav>
+
+  <main class="wrap">
+
+    <!-- 1 · Rommet -->
+    <section class="section rose" id="rommet" aria-labelledby="h-rommet">
+      <div class="kicker">Relasjoner og trygghet</div>
+      <h2 id="h-rommet">Å etablere rommet</h2>
+      <div class="copy">
+        <p>
+          Læring og deltakelse skjer i en sosial situasjon. Hvordan mennesker blir møtt,
+          hvilke relasjoner som finnes i rommet, og hvor trygt det oppleves å stille spørsmål,
+          uttrykke usikkerhet og bidra, får betydning for hva som blir mulig.
+        </p>
+        <p>
+          Å etablere rommet handler om å kjenne menneskene som deltar, bygge relasjoner og
+          skape betingelser for at ulike erfaringer og perspektiver kan komme fram.
+          I informasjonsarbeidet innebærer dette samtidig å holde fast ved den profesjonelle rollen.
+          Relasjonen skal gjøre deltakelse mulig, samtidig som grensene for rollen er tydelige.
+        </p>
+      </div>
+    </section>
+
+    <!-- 2 · Relasjon -->
+    <section class="section blue" id="relasjon" aria-labelledby="h-relasjon">
+      <div class="kicker">Profesjonell nærhet og tydelige roller</div>
+      <h2 id="h-relasjon">Å arbeide relasjonelt</h2>
+      <div class="copy">
+        <p>
+          Relasjonsarbeid handler om hvordan vi møter mennesker over tid. Tillit utvikles gjennom
+          oppmerksomhet, aktiv lytting, åpne spørsmål og en respons som viser at den andres bidrag er hørt.
+          Små handlinger får betydning for om det oppleves mulig å spørre, uttrykke usikkerhet og komme med egne perspektiver.
+        </p>
+        <p>
+          Den profesjonelle relasjonen trenger både nærhet og tydelighet. Informasjonsansvarlige skal støtte
+          beboerne i å forstå egen situasjon og kunne ta informerte valg, samtidig som rollen har grenser.
+          Relasjonelt arbeid handler derfor om å være tilgjengelig og forutsigbar uten å overta den andres ansvar eller rolle.
+        </p>
+        <p>
+          Relasjoner formes også gjennom det som ikke sies direkte. Blikk, kroppsspråk, stemmebruk,
+          plassering i rommet og hvordan vi responderer på initiativ, kommuniserer hvem som får plass og hvilke bidrag som blir tatt på alvor.
+        </p>
+      </div>
+
+      <ul class="cards cards--3 resources">
+        <li>
+          <a class="resource" href="snakk-og-bytt-kort.pdf">
+            <div class="resource-type">Kort · PDF</div>
+            <h3>Snakk og bytt</h3>
+            <p>En struktur for å møte flere mennesker, bygge kontakt og senke terskelen for videre samtale. Ferdige kort til dobbeltsidig utskrift.</p>
+            <span class="resource-arrow">Åpne kortene →</span>
+          </a>
+        </li>
+        <li>
+          <a class="resource" href="snakk-og-bytt-blanke-kort.docx">
+            <div class="resource-type">Mal · Word</div>
+            <h3>Snakk og bytt: lag dine egne kort</h3>
+            <p>Blanke kort i ti farger med ferdige baksider. Skriv inn egne spørsmål og dilemmaer, gjerne på flere språk, og skriv ut dobbeltsidig.</p>
+            <span class="resource-arrow">Last ned malen →</span>
+          </a>
+        </li>
+        <li>
+          <a class="resource" href="bygg-det-trygge.html">
+            <div class="resource-type">Interaktiv ressurs</div>
+            <h3>Bygg det trygge</h3>
+            <p>Bruk symboler til å undersøke hva som kan bidra til trygghet, tillit og mulighet for å dele.</p>
+            <span class="resource-arrow">Åpne ressursen →</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 3 · Engasjement -->
+    <section class="section yellow" id="engasjement" aria-labelledby="h-engasjement">
+      <div class="kicker">Handling, følelser, tenkning og initiativ</div>
+      <h2 id="h-engasjement">Å forstå engasjement</h2>
+      <div class="copy">
+        <p>
+          Engasjement kan komme til uttrykk gjennom handlinger, følelser, tenkning og initiativ.
+          Det som er synlig i rommet gir derfor bare deler av bildet.
+        </p>
+      </div>
+
+      <ul class="cards">
+        <li class="card" data-dim="atferd"><strong>Atferdsmessig</strong>Deltakelse, oppmerksomhet, innsats og utholdenhet.</li>
+        <li class="card" data-dim="emo"><strong>Emosjonelt</strong>Reaksjoner på innholdet, situasjonen og menneskene i rommet.</li>
+        <li class="card" data-dim="kog"><strong>Kognitivt</strong>Å undersøke, koble sammen, vurdere og arbeide for å forstå.</li>
+        <li class="card" data-dim="agent"><strong>Agentisk</strong>Å stille spørsmål, uttrykke behov, ta initiativ og få påvirke situasjonen.</li>
+      </ul>
+
+      <ul class="cards resources">
+        <li>
+          <a class="resource" href="refleksjon-engasjement.html">
+            <div class="resource-type">Refleksjonsoppgave</div>
+            <h3>Fra tegn på engasjement til refleksjon</h3>
+            <p>Undersøk en konkret situasjon fra eget informasjonsarbeid gjennom de fire dimensjonene.</p>
+            <span class="resource-arrow">Åpne refleksjonsoppgaven →</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 4 · Dialog -->
+    <section class="section aqua" id="dialog" aria-labelledby="h-dialog">
+      <div class="kicker">Samtalen som arbeidsrom</div>
+      <h2 id="h-dialog">Å åpne for dialog</h2>
+      <div class="copy">
+        <p>
+          Dialog handler om hva som skjer med innholdet når mennesker får undersøke det sammen.
+          Deltakernes erfaringer, spørsmål og fortolkninger får plass, og bidragene får betydning
+          for hvordan samtalen utvikler seg.
+        </p>
+        <p>
+          Spørsmål kan gjøre tenkning synlig. De kan åpne for at antakelser formuleres,
+          undersøkes og revideres. Slik kan informasjon bli gjenstand for bearbeiding og utvikling av forståelse.
+        </p>
+      </div>
+
+      <ol class="cards cards--3">
+        <li class="card"><strong>Bring inn</strong>Egne erfaringer, spørsmål og fortolkninger får en plass i samtalen.</li>
+        <li class="card"><strong>Ta opp</strong>Bidragene blir møtt og får betydning for hvordan samtalen går videre.</li>
+        <li class="card"><strong>Undersøk</strong>Forståelse prøves, utfordres og utvikles sammen.</li>
+      </ol>
+
+      <ul class="cards resources">
+        <li>
+          <a class="resource" href="hobbyoppgaven.html">
+            <div class="resource-type">Dialogøvelse</div>
+            <h3>Hobbyoppgaven</h3>
+            <p>Undersøk hva som skjer når du prøver å åpne et innhold du kjenner godt for et annet menneske.</p>
+            <span class="resource-arrow">Åpne øvelsen →</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 5 · Innhold / Klafki -->
+    <section class="section peach" id="innhold" aria-labelledby="h-innhold">
+      <div class="kicker">Didaktisk analyse</div>
+      <h2 id="h-innhold">Å analysere innholdet</h2>
+      <div class="copy">
+        <p>
+          Didaktisk arbeid tar utgangspunkt i innholdet, menneskene og situasjonen.
+          Klafkis spørsmål kan brukes til å undersøke hva et konkret innhold kan åpne,
+          hvilken betydning det har her og nå, hvilken betydning det kan få videre,
+          hvordan innholdet er strukturert, og hvordan det kan gjøres tilgjengelig.
+        </p>
+        <p>
+          Spørsmålene gir et grunnlag for å velge arbeidsmåter med større presisjon.
+          Metoden blir et svar på den didaktiske analysen.
+        </p>
+      </div>
+
+      <ol class="klafki">
+        <li><span class="num" aria-hidden="true">1</span><div><strong>Hva kan innholdet åpne?</strong><span>Eksemplarisk betydning</span></div></li>
+        <li><span class="num" aria-hidden="true">2</span><div><strong>Hvorfor betyr dette noe her og nå?</strong><span>Nåtidsbetydning</span></div></li>
+        <li><span class="num" aria-hidden="true">3</span><div><strong>Hva kan deltakerne få bruk for videre?</strong><span>Fremtidsbetydning</span></div></li>
+        <li><span class="num" aria-hidden="true">4</span><div><strong>Hva er innholdets indre struktur?</strong><span>Kjerne, deler, sammenhenger og mulige bruddsteder</span></div></li>
+        <li><span class="num" aria-hidden="true">5</span><div><strong>Hvordan kan innholdet gjøres tilgjengelig?</strong><span>Erfaringer, eksempler, representasjoner og arbeidsmåter</span></div></li>
+      </ol>
+
+      <ul class="cards resources">
+        <li>
+          <a class="resource" href="klafki-arbeidsark.html">
+            <div class="resource-type">Interaktivt arbeidsark</div>
+            <h3>Klafki som arbeidsmåte</h3>
+            <p>Velg modul og tema, arbeid med ett Klafki-spørsmål og ta med stikkordene videre i gruppa.</p>
+            <span class="resource-arrow">Åpne arbeidsarket →</span>
+          </a>
+        </li>
+        <li>
+          <a class="resource" href="klafki-kort.pdf">
+            <div class="resource-type">Kort · PDF</div>
+            <h3>Klafki-kort</h3>
+            <p>Fem fargekodede spørsmål som organiserer didaktisk analyse og samtale på tvers av moduler.</p>
+            <span class="resource-arrow">Åpne kortene →</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 6 · Design -->
+    <section class="section lavender" id="design" aria-labelledby="h-design">
+      <div class="kicker">Fra analyse til iscenesetting</div>
+      <h2 id="h-design">Å designe for læring</h2>
+      <div class="copy">
+        <p>
+          Et læringsforløp formes gjennom hvilke ressurser som tilbys, hva deltakerne får gjøre
+          med innholdet, hvilke uttrykksformer de kan bruke, hvordan samtaler organiseres,
+          og hvilke tegn på forståelse som blir synlige.
+        </p>
+        <p>
+          Selander og Kress gir et språk for denne iscenesettelsen. Shulman bidrar med spørsmål
+          om hva en arbeidsmåte faktisk gjør mulig, hvilke antakelser om læring den bygger på,
+          og hvilke posisjoner den gir menneskene i rommet.
+        </p>
+      </div>
+
+      <ul class="cards cards--3">
+        <li class="card"><strong>Ressurser</strong>Hva møter deltakerne, og gjennom hvilke uttrykksformer, medier og verktøy?</li>
+        <li class="card"><strong>Bearbeiding</strong>Hva får deltakerne gjøre med innholdet for å undersøke og utvikle forståelse?</li>
+        <li class="card"><strong>Tegn på forståelse</strong>Hva kan bli synlig underveis som forteller noe om hvordan innholdet blir forstått?</li>
+      </ul>
+
+      <ul class="cards resources">
+        <li>
+          <a class="resource" href="planlegging-design-for-laering.html">
+            <div class="resource-type">Interaktivt planleggingsverktøy</div>
+            <h3>Planlegging: design for læring</h3>
+            <p>Arbeid steg for steg med rammer, iscenesetting, transformering, representasjon, refleksjon og tegn på læring, og samle planleggingen i én oversikt.</p>
+            <span class="resource-arrow">Åpne planleggingsverktøyet →</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Avslutning -->
+    <section class="closing" aria-labelledby="h-closing">
+      <h2 id="h-closing">Fra informasjon til læring</h2>
+      <p>
+        Kjenn menneskene som skal møte innholdet. Undersøk hva innholdet kan åpne.
+        Skap rom for spørsmål, erfaringer og bearbeiding. Velg arbeidsmåter som gjør det
+        mulig for deltakerne å komme inn i innholdet og bruke det til å forstå og handle.
+      </p>
+    </section>
+
+    <!-- Litteratur -->
+    <section class="literature" id="litteratur" aria-labelledby="h-litteratur">
+      <div class="kicker">Faglig grunnlag</div>
+      <h2 id="h-litteratur">Litteratur</h2>
+      <ul class="references">
+        <li>Bialystok, L. (2015). Should teachers be authentic? <em>Ethics and Education, 10</em>(3), 313–326. <a href="https://doi.org/10.1080/17449642.2015.1099801" target="_blank" rel="noopener">https://doi.org/10.1080/17449642.2015.1099801</a></li>
+        <li>Cozby, P. C. (1973). Self-disclosure: a literature review. <em>Psychological Bulletin, 79</em>(2), 73.</li>
+        <li>Fredricks, J. A., Blumenfeld, P. C. &amp; Paris, A. H. (2004). School engagement: Potential of the concept, state of the evidence. <em>Review of Educational Research, 74</em>(1), 59–109.</li>
+        <li>Goldstein, G. S. &amp; Benassi, V. A. (1994). The relation between teacher self-disclosure and student classroom participation. <em>Teaching of Psychology, 21</em>(4), 212–217.</li>
+        <li>Henry, A. &amp; Thorsen, C. (2021). Teachers’ self-disclosures and influences on students’ motivation: A relational perspective. <em>International Journal of Bilingual Education and Bilingualism, 24</em>(1), 1–15.</li>
+        <li>Klafki, W. (1995). Didactic analysis as the core of preparation of instruction (Didaktische Analyse als Kern der Unterrichtsvorbereitung). <em>Journal of Curriculum Studies, 27</em>(1), 13–30. <a href="https://doi.org/10.1080/0022027950270103" target="_blank" rel="noopener">https://doi.org/10.1080/0022027950270103</a></li>
+        <li>Kress, G., Bezemer, J., Diamantopoulou, S., Jewitt, C. &amp; Mavers, D. (2021). A social semiotic perspective on learning: Engagement, multimodality and agency in a changing world. <em>Learning as Social Practice: Beyond education as an individual enterprise</em>. London: Routledge, 70–102.</li>
+        <li>Kress, G. &amp; Selander, S. (2012). Multimodal design, learning and cultures of recognition. <em>The Internet and Higher Education, 15</em>(4), 265–268. <a href="https://doi.org/10.1016/j.iheduc.2011.12.003" target="_blank" rel="noopener">https://doi.org/10.1016/j.iheduc.2011.12.003</a></li>
+        <li>Kromka, S. M. &amp; Goodboy, A. K. (2021). The effects of relevant instructor self-disclosure on student affect and cognitive learning: A live lecture experiment. <em>Communication Education, 70</em>(3), 266–287.</li>
+        <li>Plust, U., Murphy, D. &amp; Joseph, S. (2021). A systematic review and metasynthesis of qualitative research into teachers’ authenticity. <em>Cambridge Journal of Education, 51</em>(3), 301–325.</li>
+        <li>Reeve, J. &amp; Tseng, C.-M. (2011). Agency as a fourth aspect of students’ engagement during learning activities. <em>Contemporary Educational Psychology, 36</em>(4), 257–267.</li>
+        <li>Selander, S. (2024). Meaning-making and transformative engagement: notes on Gunther Kress’s social semiotic and multimodal approach to learning. <em>Text &amp; Talk, 44</em>(4), 511–525.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    Mari-Ann Letnes · NTNU
+  </footer>
+</body>
+</html>
