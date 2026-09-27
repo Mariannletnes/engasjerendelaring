@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Hobbyoppgaven — Mari-Ann Letnes</title>
+<meta name="description" content="Dialogøvelse i par: prøv det samme innholdet først som formidling, så som dialog.">
+<meta property="og:title" content="Hobbyoppgaven">
+<meta property="og:image" content="https://mariannletnes.com/portrett-mork.jpg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mariannletnes.com/hobbyoppgaven.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23332830'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='15' fill='%23F8F4F1' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ Tokens ============ */
+:root{
+  --paper:#F8F4F1;
+  --stone:#E8EEEC;
+  --surface:#FFFFFF;
+  --dark:#332830;
+  --plum:#6E4B57;
+  --ink:#4A3C43;
+  --body:#5E4F55;
+  --quiet:#7E6F74;
+  --hair:#E1D8D1;
+  --hair-stone:#DBD1C9;
+  --shadow:0 18px 38px rgba(51,40,48,.08);
+
+  --aqua:#1B8283;
+  --aqua-soft:#E2F3F1;
+
+  /* Rollene i paret */
+  --a:#1B8283;  --a-soft:#E2F3F1;
+  --b:#B85C1A;  --b-soft:#FCEBDC;
+
+  /* Formidling er enveis og holdes dempet. Dialog får farge. */
+  --mute:#8E8189;
+  --mute-soft:#F0ECEA;
+
+  /* De tre kjennetegnene på dialog, med fargene fra lysbildet */
+  --d1:#1B8283;  --d1-soft:#E2F3F1;
+  --d2:#B08A00;  --d2-soft:#FBF3D4;
+  --d3:#C44B90;  --d3-soft:#FCE8F4;
+}
+
+/* ============ Grunnlag ============ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:
+    radial-gradient(circle at 70% 0%, rgba(255,255,255,.9), rgba(255,255,255,0) 45%),
+    linear-gradient(180deg,#F2F7F5 0%, var(--stone) 100%);
+  color:var(--body);
+  font-family:'Jost',system-ui,sans-serif;
+  font-size:1.05rem;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+h1,h2,h3,p{margin:0}
+a{color:inherit}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--aqua);outline-offset:3px}
+
+/* ============ Topp ============ */
+.top{
+  max-width:680px;
+  margin:0 auto;
+  width:100%;
+  padding:22px 24px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.signature{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:1.3rem;
+  color:var(--ink);
+  text-decoration:none;
+}
+.source{font-size:.88rem;color:var(--quiet)}
+
+/* ============ Premisset øverst ============ */
+.premise{
+  max-width:680px;
+  margin:18px auto 0;
+  width:100%;
+  padding:0 24px;
+}
+.premise-inner{
+  padding:20px 22px;
+  background:var(--aqua-soft);
+  border-left:5px solid var(--aqua);
+  border-radius:0 18px 18px 0;
+}
+.premise h1{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-weight:500;
+  font-size:1.9rem;
+  line-height:1.12;
+  color:var(--ink);
+  margin-bottom:8px;
+}
+.premise p{font-size:1rem;line-height:1.6;color:var(--ink)}
+.premise p + p{margin-top:8px}
+
+/* ============ Kortet ============ */
+main{
+  flex:1;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:18px 24px 36px;
+}
+.card{
+  width:100%;
+  max-width:632px;
+  padding:26px 28px 28px;
+  background:var(--surface);
+  border:1px solid var(--hair);
+  border-radius:22px;
+  box-shadow:var(--shadow);
+}
+
+.progress{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-bottom:22px;
+}
+.pill{
+  width:32px;
+  height:32px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--hair-stone);
+  border-radius:50%;
+  background:transparent;
+  color:var(--quiet);
+  font-size:.88rem;
+  transition:background .2s ease,color .2s ease,border-color .2s ease;
+}
+.pill.done{border-color:var(--aqua);color:var(--aqua)}
+.pill.active{background:var(--aqua);border-color:var(--aqua);color:#fff}
+
+.kicker{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:.76rem;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-weight:500;
+  color:var(--quiet);
+  margin-bottom:9px;
+}
+.mode-tag{
+  padding:3px 10px;
+  border-radius:999px;
+  letter-spacing:.06em;
+}
+.mode-tag.formidling{background:var(--mute-soft);color:var(--mute)}
+.mode-tag.dialog{background:var(--aqua-soft);color:var(--aqua)}
+
+.step-title{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-weight:500;
+  font-size:1.85rem;
+  line-height:1.15;
+  color:var(--ink);
+  margin-bottom:12px;
+}
+.step-desc{font-size:1.04rem;line-height:1.62}
+
+/* ============ Rollene ============ */
+.roles{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:18px;
+}
+.role{
+  padding:16px 16px 15px;
+  border-radius:16px;
+  border:1px solid var(--hair);
+  background:var(--paper);
+  opacity:.55;
+  transition:opacity .2s ease;
+}
+.role.on{
+  opacity:1;
+  background:var(--c-soft);
+  border-color:var(--c);
+  box-shadow:0 0 0 2px var(--c);
+}
+.role-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  font-size:.76rem;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-weight:500;
+  color:var(--c);
+  margin-bottom:6px;
+}
+.role-letter{
+  width:22px;
+  height:22px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:var(--c);
+  color:#fff;
+  font-size:.78rem;
+}
+.role p{font-size:.95rem;line-height:1.5}
+.role.a{--c:var(--a); --c-soft:var(--a-soft)}
+.role.b{--c:var(--b); --c-soft:var(--b-soft)}
+.role.quiet{--c:var(--mute); --c-soft:var(--mute-soft)}
+
+/* ============ Spørsmålene som står framme underveis ============ */
+.prompts{
+  list-style:none;
+  margin:16px 0 0;
+  padding:14px 16px;
+  background:var(--aqua-soft);
+  border-radius:16px;
+}
+.prompts li{
+  position:relative;
+  padding-left:17px;
+  font-size:.95rem;
+  line-height:1.5;
+  color:var(--ink);
+}
+.prompts li + li{margin-top:5px}
+.prompts li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:.6em;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--aqua);
+}
+
+/* ============ Nedtellingen ============ */
+.timer{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  margin-top:20px;
+  padding:16px 18px;
+  background:var(--paper);
+  border:1px solid var(--hair);
+  border-radius:18px;
+}
+.dial{position:relative;width:104px;height:104px;flex:none}
+.dial svg{width:104px;height:104px;transform:rotate(-90deg)}
+.dial .track{fill:none;stroke:var(--hair);stroke-width:8}
+.dial .run{
+  fill:none;
+  stroke:var(--c, var(--aqua));
+  stroke-width:8;
+  stroke-linecap:round;
+  transition:stroke-dashoffset .3s linear;
+}
+.dial-num{
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  font-size:1.5rem;
+  color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.timer-side{flex:1;min-width:0}
+.timer-label{font-size:.95rem;color:var(--body);margin-bottom:10px}
+.timer.done .timer-label{color:var(--ink);font-weight:500}
+.timer-btns{display:flex;gap:8px;flex-wrap:wrap}
+.tbtn{
+  border:1px solid var(--hair-stone);
+  background:var(--surface);
+  color:var(--ink);
+  font-size:.92rem;
+  padding:9px 16px;
+  border-radius:999px;
+  transition:border-color .16s ease;
+}
+.tbtn:hover{border-color:var(--aqua)}
+.tbtn.primary{
+  background:var(--aqua);
+  border-color:var(--aqua);
+  color:#fff;
+}
+.tbtn.primary:hover{filter:brightness(1.06)}
+
+/* ============ De tre kjennetegnene ============ */
+.crits{
+  list-style:none;
+  padding:0;
+  margin:16px 0 0;
+  display:grid;
+  gap:10px;
+}
+.crit{
+  width:100%;
+  text-align:left;
+  display:grid;
+  grid-template-columns:28px 1fr;
+  gap:12px;
+  align-items:start;
+  padding:14px 15px;
+  border-radius:16px;
+  border:1px solid var(--hair);
+  background:var(--paper);
+  transition:background .16s ease, border-color .16s ease;
+}
+.crit-num{
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:var(--c);
+  color:#fff;
+  font-size:.86rem;
+}
+.crit strong{
+  display:block;
+  font-weight:500;
+  font-size:.97rem;
+  color:var(--ink);
+  margin-bottom:2px;
+}
+.crit span{display:block;font-size:.89rem;line-height:1.45;color:var(--body)}
+.crit:hover{border-color:var(--c)}
+.crit[aria-pressed="true"]{
+  background:var(--c-soft);
+  border-color:var(--c);
+  box-shadow:0 0 0 2px var(--c);
+}
+.crit.d1{--c:var(--d1); --c-soft:var(--d1-soft)}
+.crit.d2{--c:var(--d2); --c-soft:var(--d2-soft)}
+.crit.d3{--c:var(--d3); --c-soft:var(--d3-soft)}
+
+.field{margin-top:16px}
+.field label{
+  display:block;
+  font-size:.94rem;
+  color:var(--plum);
+  margin-bottom:7px;
+}
+.field textarea{
+  width:100%;
+  min-height:92px;
+  resize:vertical;
+  padding:12px 14px;
+  background:var(--paper);
+  color:var(--ink);
+  border:1px solid var(--hair);
+  border-radius:16px;
+  font-family:inherit;
+  font-size:.98rem;
+  line-height:1.5;
+}
+.field textarea::placeholder{color:var(--quiet)}
+
+/* ============ Til plenum ============ */
+.recall{
+  margin-top:18px;
+  padding:16px 18px;
+  background:var(--aqua-soft);
+  border-radius:18px;
+}
+.recall h3{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-weight:500;
+  font-size:1.15rem;
+  color:var(--ink);
+  margin-bottom:8px;
+}
+.recall-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.chip{
+  font-size:.83rem;
+  font-weight:500;
+  padding:5px 12px;
+  border-radius:999px;
+  background:var(--c-soft);
+  color:var(--c);
+  border:1px solid var(--c);
+}
+.recall-note{font-size:.96rem;line-height:1.55;white-space:pre-wrap;color:var(--ink)}
+.recall-note + .recall-note{margin-top:8px}
+.recall-empty{font-size:.95rem;color:var(--quiet);font-style:italic}
+.bridge{
+  margin-top:16px;
+  padding:14px 16px;
+  background:var(--b-soft);
+  border-left:4px solid var(--b);
+  border-radius:0 14px 14px 0;
+  font-size:.96rem;
+  line-height:1.55;
+  color:var(--ink);
+}
+
+/* ============ Navigasjon ============ */
+.nav-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:24px;
+  gap:16px;
+}
+.btn-next{
+  flex:1;
+  background:var(--dark);
+  color:#F7F1F2;
+  border:none;
+  font-size:1.02rem;
+  padding:15px 28px;
+  border-radius:999px;
+  text-align:center;
+  transition:background .2s ease;
+}
+.btn-next:hover{background:var(--ink)}
+.btn-prev{
+  background:transparent;
+  border:none;
+  color:var(--quiet);
+  font-size:1rem;
+  padding:15px 6px;
+}
+.btn-prev:disabled{opacity:0;pointer-events:none}
+.btn-prev:not(:disabled):hover{color:var(--aqua)}
+
+.end-note{
+  margin-top:18px;
+  font-size:.98rem;
+  color:var(--quiet);
+  line-height:1.6;
+}
+
+.restart-row{text-align:center;padding:0 24px 34px}
+.restart{
+  background:none;
+  border:none;
+  padding:0 0 2px;
+  color:var(--quiet);
+  font-size:.95rem;
+  box-shadow:inset 0 -1px 0 var(--hair-stone);
+}
+.restart:hover{color:var(--aqua);box-shadow:inset 0 -1px 0 var(--aqua)}
+
+/* ============ Mobil ============ */
+@media (max-width:560px){
+  .top,.premise,main{padding-left:16px;padding-right:16px}
+  .card{padding:22px 18px 24px;border-radius:18px}
+  .premise h1{font-size:1.65rem}
+  .step-title{font-size:1.55rem}
+  .roles{grid-template-columns:1fr}
+  .timer{flex-direction:column;align-items:flex-start;gap:14px}
+}
+
+/* ============ Redusert bevegelse ============ */
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a href="index.html" class="signature">Mari-Ann Letnes</a>
+  <span class="source">Dialogøvelse i par</span>
+</div>
+
+<div class="premise">
+  <div class="premise-inner">
+    <h1>Hobbyoppgaven</h1>
+    <p>Du har et innhold du kjenner godt. Den andre kjenner det kanskje ikke ennå. Poenget er ikke hobbyen — poenget er hvordan et innhold kan åpnes for en annen.</p>
+    <p>Du prøver den samme hobbyen to ganger: først som formidling, så som dialog. Med hver sin partner, så ingen hører det samme innholdet to ganger.</p>
+  </div>
+</div>
+
+<main>
+  <div class="card">
+    <div class="progress" id="progress" role="group" aria-label="Punkter i øvelsen"></div>
+
+    <p class="kicker" id="stepKicker"></p>
+    <h2 class="step-title" id="stepTitle"></h2>
+    <p class="step-desc" id="stepDesc"></p>
+
+    <div id="rolesArea"></div>
+    <div id="promptsArea"></div>
+    <div id="timerArea"></div>
+    <div id="extraArea"></div>
+
+    <p class="end-note" id="endNote">Det var siste punkt. Vent til dere blir bedt om å dele i plenum.</p>
+
+    <div class="nav-row">
+      <button class="btn-prev" type="button" id="prevBtn">Forrige</button>
+      <button class="btn-next" type="button" id="nextBtn">Neste</button>
+    </div>
+  </div>
+</main>
+
+<div class="restart-row">
+  <button class="restart" type="button" id="restartBtn">Start på nytt</button>
+</div>
+
+<script>
+/* ============================================================
+   Øvelsens gang.
+
+   Runde 1 er formidling: bare den som forteller lyser opp.
+   Runde 2 er dialog: begge lyser, fordi ingen av setene er
+   passive i en dialog. Det er hele poenget med øvelsen, og
+   det skal være synlig på skjermen.
+   ============================================================ */
+
+/* Spørsmålene fra lysbildet, som står framme under dialogrundene. */
+var dialogQuestions = [
+  "Hva spør du om?",
+  "Hva lytter du etter?",
+  "Hva gjør du med det den andre bringer inn?",
+  "Når merker du at samtalen åpner seg?"
+];
+
+var steps = [
+  {
+    kicker:"Før dere starter",
+    title:"Finn deg en partner",
+    desc:"Reis dere og finn én dere ikke har snakket med i dag. Bli enige om hvem som er A og hvem som er B. Blir dere stående tre igjen, kjør som tre og del tiden på tre.",
+    roles:{
+      a:"Du forteller først.",
+      b:"Du forteller etterpå."
+    },
+    bothOn:true
+  },
+  {
+    kicker:"Hver for dere",
+    title:"Tenk på en hobby",
+    desc:"Tenk stille på en hobby eller interesse du selv er ekte engasjert i — ikke noe som høres bra ut, men noe du faktisk brenner for.",
+    seconds:60
+  },
+  {
+    kicker:"Runde 1",
+    mode:"formidling",
+    title:"A forteller",
+    desc:"Fortell om hobbyen din. Du har ordet alene.",
+    roles:{
+      a:"Fortell. Du har to minutter, og du har dem for deg selv.",
+      b:"Bare lytt. Ingen spørsmål, ingen svar. Merk hva som skjer i deg."
+    },
+    speaker:"a",
+    seconds:120
+  },
+  {
+    kicker:"Runde 1",
+    mode:"formidling",
+    title:"B forteller",
+    desc:"Samme form, motsatt vei.",
+    roles:{
+      a:"Bare lytt. Ingen spørsmål, ingen svar. Merk hva som skjer i deg.",
+      b:"Fortell. Du har to minutter, og du har dem for deg selv."
+    },
+    speaker:"b",
+    seconds:120
+  },
+  {
+    kicker:"Bytt partner",
+    title:"Ett ord hver, så videre",
+    desc:"Si ett ord hver om hvordan det var å lytte uten å kunne si noe. Ikke diskuter det. Reis dere så og finn en ny partner — en som ikke har hørt hobbyen din. Bli enige om hvem som er A denne gangen.",
+    seconds:90
+  },
+  {
+    kicker:"Runde 2",
+    mode:"dialog",
+    title:"A åpner",
+    desc:"Samme hobby som i runde 1, men ny partner og ny form. Nå skal innholdet åpnes gjennom samtale.",
+    roles:{
+      a:"Åpne hobbyen din gjennom samtale. Gjør noe med det den andre bringer inn.",
+      b:"Spør. Koble til noe du kjenner. Utfordre gjerne."
+    },
+    speaker:"a",
+    bothOn:true,
+    prompts:dialogQuestions,
+    seconds:180
+  },
+  {
+    kicker:"Runde 2",
+    mode:"dialog",
+    title:"B åpner",
+    desc:"Samme form, motsatt vei.",
+    roles:{
+      a:"Spør. Koble til noe du kjenner. Utfordre gjerne.",
+      b:"Åpne hobbyen din gjennom samtale. Gjør noe med det den andre bringer inn."
+    },
+    speaker:"b",
+    bothOn:true,
+    prompts:dialogQuestions,
+    seconds:180
+  },
+  {
+    kicker:"Hver for dere",
+    title:"Hva skjedde i samtalen?",
+    desc:"Bruk erfaringen fra de to rundene til å se hva dialog kan gjøre.",
+    mode2:"reflect",
+    prompts:[
+      "Hva gjorde du for å åpne hobbyen din for den andre?",
+      "Hva gjorde du med det den andre sa?",
+      "Hva fikk den andre mulighet til å spørre om, utfordre eller påvirke?"
+    ],
+    seconds:180
+  },
+  {
+    kicker:"I paret",
+    title:"Del med hverandre",
+    desc:"Fortell hverandre hva dere la merke til. Ble det forskjell på runde 1 og runde 2, og hva besto forskjellen i?",
+    seconds:120
+  },
+  {
+    kicker:"Til slutt",
+    title:"Del i plenum",
+    desc:"Fortell om øyeblikket der samtalen gikk fra formidling til dialog. Hva var det som skjedde akkurat da?",
+    mode2:"recall"
+  }
+];
+
+/* De tre kjennetegnene på dialog, fra lysbildet. */
+var criteria = [
+  { key:"d1", name:"Bring inn",  text:"Den andre fikk bringe inn egne erfaringer, spørsmål og fortolkninger." },
+  { key:"d2", name:"Ta opp",     text:"Bidragene ble tatt opp og fikk betydning for hvordan samtalen gikk videre." },
+  { key:"d3", name:"Undersøk",   text:"Forståelsen ble prøvd, utfordret og utviklet mens dere snakket." }
+];
+
+var current = 0;
+var marked = {};
+var turnNote = "";   /* når samtalen snudde */
+var openNote = "";   /* hva som åpnet eller stoppet den */
+
+var progressEl = document.getElementById('progress');
+var kickerEl   = document.getElementById('stepKicker');
+var titleEl    = document.getElementById('stepTitle');
+var descEl     = document.getElementById('stepDesc');
+var rolesArea  = document.getElementById('rolesArea');
+var promptsArea= document.getElementById('promptsArea');
+var timerArea  = document.getElementById('timerArea');
+var extraArea  = document.getElementById('extraArea');
+var endNote    = document.getElementById('endNote');
+var prevBtn    = document.getElementById('prevBtn');
+var nextBtn    = document.getElementById('nextBtn');
+var restartBtn = document.getElementById('restartBtn');
+
+/* ============ Nedtellingen ============ */
+var RADIUS = 46;
+var CIRC = 2 * Math.PI * RADIUS;
+var tick = null;
+var total = 0, left = 0, running = false;
+
+function clearTimer(){
+  if (tick){ clearInterval(tick); tick = null; }
+  running = false;
+}
+
+function mmss(s){
+  var m = Math.floor(s / 60);
+  var r = s % 60;
+  return m + ':' + (r < 10 ? '0' : '') + r;
+}
+
+function buildTimer(seconds, color){
+  clearTimer();
+  total = seconds;
+  left = seconds;
+  timerArea.innerHTML =
+    '<div class="timer" id="timerBox" style="--c:' + color + '">' +
+      '<div class="dial">' +
+        '<svg viewBox="0 0 104 104" aria-hidden="true">' +
+          '<circle class="track" cx="52" cy="52" r="' + RADIUS + '"></circle>' +
+          '<circle class="run" id="dialRun" cx="52" cy="52" r="' + RADIUS + '" ' +
+            'stroke-dasharray="' + CIRC + '" stroke-dashoffset="0"></circle>' +
+        '</svg>' +
+        '<div class="dial-num" id="dialNum">' + mmss(seconds) + '</div>' +
+      '</div>' +
+      '<div class="timer-side">' +
+        '<p class="timer-label" id="timerLabel">Sett i gang når dere er klare.</p>' +
+        '<div class="timer-btns">' +
+          '<button class="tbtn primary" type="button" id="timerToggle">Start</button>' +
+          '<button class="tbtn" type="button" id="timerReset">Nullstill</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  document.getElementById('timerToggle').addEventListener('click', toggleTimer);
+  document.getElementById('timerReset').addEventListener('click', function(){
+    clearTimer();
+    left = total;
+    paintTimer();
+    document.getElementById('timerToggle').textContent = 'Start';
+    document.getElementById('timerLabel').textContent = 'Sett i gang når dere er klare.';
+    document.getElementById('timerBox').classList.remove('done');
+  });
+  paintTimer();
+}
+
+function paintTimer(){
+  var num = document.getElementById('dialNum');
+  var run = document.getElementById('dialRun');
+  if (!num || !run) return;
+  num.textContent = mmss(Math.max(0, left));
+  run.setAttribute('stroke-dashoffset', String(CIRC * (1 - left / total)));
+}
+
+function toggleTimer(){
+  var btn = document.getElementById('timerToggle');
+  var label = document.getElementById('timerLabel');
+  var box = document.getElementById('timerBox');
+
+  if (running){
+    clearTimer();
+    btn.textContent = 'Fortsett';
+    label.textContent = 'På pause.';
+    return;
+  }
+  if (left <= 0){ left = total; box.classList.remove('done'); }
+
+  running = true;
+  btn.textContent = 'Pause';
+  label.textContent = 'Klokka går.';
+  tick = setInterval(function(){
+    left--;
+    paintTimer();
+    if (left <= 0){
+      clearTimer();
+      box.classList.add('done');
+      label.textContent = 'Tiden er ute.';
+      btn.textContent = 'Start på nytt';
+    }
+  }, 1000);
+}
+
+/* ============ Rollene ============ */
+function buildRoles(s){
+  if (!s.roles){ rolesArea.innerHTML = ''; return; }
+
+  /* I dialog lyser begge. I formidling bare den som har ordet. */
+  var aOn = s.bothOn || s.speaker === 'a';
+  var bOn = s.bothOn || s.speaker === 'b';
+
+  rolesArea.innerHTML =
+    '<div class="roles">' +
+      roleCard('a', 'A', aOn, s.speaker === 'a', s.roles.a, s.mode) +
+      roleCard('b', 'B', bOn, s.speaker === 'b', s.roles.b, s.mode) +
+    '</div>';
+}
+
+function roleCard(key, letter, on, isSpeaker, text, mode){
+  var tag;
+  if (mode === 'dialog'){ tag = isSpeaker ? 'Åpner' : 'Undersøker'; }
+  else if (mode === 'formidling'){ tag = isSpeaker ? 'Forteller' : 'Lytter'; }
+  else { tag = 'Rolle ' + letter; }
+
+  /* Den som bare lytter, dempes også i fargen. */
+  var cls = 'role ' + key + (on ? ' on' : '') + ((!on) ? ' quiet' : '');
+
+  return '<div class="' + cls + '">' +
+           '<span class="role-tag"><span class="role-letter">' + letter + '</span>' + tag + '</span>' +
+           '<p>' + text + '</p>' +
+         '</div>';
+}
+
+/* ============ Spørsmålene som står framme ============ */
+function buildPrompts(list){
+  if (!list){ promptsArea.innerHTML = ''; return; }
+  var html = '<ul class="prompts">';
+  list.forEach(function(q){ html += '<li>' + q + '</li>'; });
+  promptsArea.innerHTML = html + '</ul>';
+}
+
+/* ============ Refleksjonen ============ */
+function buildReflect(){
+  var html = '<ul class="crits">';
+  criteria.forEach(function(c, i){
+    html += '<li><button class="crit ' + c.key + '" type="button" data-crit="' + c.key + '" ' +
+            'aria-pressed="' + (marked[c.key] ? 'true' : 'false') + '">' +
+            '<span class="crit-num" aria-hidden="true">' + (i + 1) + '</span>' +
+            '<span><strong>' + c.name + '</strong><span>' + c.text + '</span></span>' +
+            '</button></li>';
+  });
+  html += '</ul>' +
+    '<div class="field">' +
+      '<label for="turnNote">Når gikk samtalen fra formidling til faktisk dialog?</label>' +
+      '<textarea id="turnNote" placeholder="Beskriv øyeblikket …"></textarea>' +
+    '</div>' +
+    '<div class="field">' +
+      '<label for="openNote">Hva gjorde at samtalen stoppet opp eller åpnet seg?</label>' +
+      '<textarea id="openNote" placeholder="Skriv et par stikkord …"></textarea>' +
+    '</div>';
+  extraArea.innerHTML = html;
+
+  extraArea.querySelectorAll('.crit').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var k = btn.getAttribute('data-crit');
+      marked[k] = !marked[k];
+      btn.setAttribute('aria-pressed', marked[k] ? 'true' : 'false');
+    });
+  });
+
+  var t1 = document.getElementById('turnNote');
+  t1.value = turnNote;
+  t1.addEventListener('input', function(){ turnNote = t1.value; });
+
+  var t2 = document.getElementById('openNote');
+  t2.value = openNote;
+  t2.addEventListener('input', function(){ openNote = t2.value; });
+}
+
+/* ============ Det deltakeren tar med til plenum ============ */
+function buildRecall(){
+  var chosen = criteria.filter(function(c){ return marked[c.key]; });
+  var html = '';
+
+  if (chosen.length > 0 || turnNote.trim() !== '' || openNote.trim() !== ''){
+    html += '<div class="recall"><h3>Det du noterte</h3>';
+    if (chosen.length > 0){
+      html += '<div class="recall-chips">';
+      chosen.forEach(function(c){
+        html += '<span class="chip" style="--c:var(--' + c.key + ');--c-soft:var(--' + c.key + '-soft)">' + c.name + '</span>';
+      });
+      html += '</div>';
+    }
+    if (turnNote.trim() !== ''){ html += '<p class="recall-note">' + escapeHtml(turnNote.trim()) + '</p>'; }
+    if (openNote.trim() !== ''){ html += '<p class="recall-note">' + escapeHtml(openNote.trim()) + '</p>'; }
+    if (turnNote.trim() === '' && openNote.trim() === ''){
+      html += '<p class="recall-empty">Du skrev ingen stikkord.</p>';
+    }
+    html += '</div>';
+  }
+
+  html += '<div class="bridge">Dette leder oss videre: hvordan kan vi åpne et innhold, og samtidig gi den andre mulighet til å komme inn i det fra sitt ståsted?</div>';
+  extraArea.innerHTML = html;
+}
+
+function escapeHtml(s){
+  return s.replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+
+/* ============ Tegning av steget ============ */
+function renderProgress(){
+  progressEl.innerHTML = '';
+  steps.forEach(function(s, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pill' + (i === current ? ' active' : (i < current ? ' done' : ''));
+    b.textContent = i + 1;
+    b.setAttribute('aria-label', 'Gå til punkt ' + (i + 1) + ': ' + s.title);
+    if (i === current) b.setAttribute('aria-current', 'step');
+    b.addEventListener('click', function(){ current = i; render(); });
+    progressEl.appendChild(b);
+  });
+}
+
+function render(){
+  clearTimer();
+  renderProgress();
+
+  var s = steps[current];
+
+  var kick = '<span>' + s.kicker + '</span>';
+  if (s.mode){
+    kick += '<span class="mode-tag ' + s.mode + '">' + (s.mode === 'dialog' ? 'Dialog' : 'Formidling') + '</span>';
+  }
+  kickerEl.innerHTML = kick;
+
+  titleEl.textContent = s.title;
+  descEl.textContent = s.desc || '';
+  descEl.style.display = s.desc ? 'block' : 'none';
+
+  rolesArea.innerHTML = '';
+  promptsArea.innerHTML = '';
+  timerArea.innerHTML = '';
+  extraArea.innerHTML = '';
+
+  buildRoles(s);
+  buildPrompts(s.prompts);
+
+  if (s.seconds){
+    var color = s.speaker === 'b' ? 'var(--b)' : 'var(--aqua)';
+    buildTimer(s.seconds, color);
+  }
+
+  if (s.mode2 === 'reflect'){ buildReflect(); }
+  if (s.mode2 === 'recall'){ buildRecall(); }
+
+  var last = (current === steps.length - 1);
+  prevBtn.disabled = (current === 0);
+  nextBtn.style.display = last ? 'none' : 'block';
+  endNote.style.display = last ? 'block' : 'none';
+}
+
+prevBtn.addEventListener('click', function(){ if (current > 0){ current--; render(); } });
+nextBtn.addEventListener('click', function(){ if (current < steps.length - 1){ current++; render(); } });
+restartBtn.addEventListener('click', function(){
+  current = 0;
+  marked = {};
+  turnNote = "";
+  openNote = "";
+  render();
+});
+
+render();
+</script>
+
+</body>
+</html>
