@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Fullfør setningen — Mari-Ann Letnes</title>
+<meta name="description" content="Jeg vet at de er med når … Skriv tre setninger, og ta vare på dem.">
+<meta property="og:title" content="Fullfør setningen">
+<meta property="og:image" content="https://mariannletnes.com/portrett-mork.jpg">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://mariannletnes.com/fullfor-setningen.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23332830'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='15' fill='%23F8F4F1' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+/* ============ Tokens ============ */
+:root{
+  --paper:#FBF9F7;
+  --stone:#EDE7E2;
+  --surface:#FFFFFF;
+  --dark:#332830;
+  --plum:#6E4B57;
+  --plum-soft:#F3ECEE;
+  --ink:#4A3C43;
+  --body:#5E4F55;
+  --quiet:#7E6F74;
+  --hair:#E6DDD6;
+  --hair-stone:#DBD1C9;
+  --shadow:0 18px 40px rgba(51,40,48,.08);
+}
+
+/* ============ Grunnlag ============ */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  background:
+    radial-gradient(circle at 78% -5%, rgba(255,255,255,.92), rgba(255,255,255,0) 48%),
+    linear-gradient(180deg,#F6F1ED 0%, var(--stone) 100%);
+  color:var(--body);
+  font-family:'Jost',system-ui,sans-serif;
+  font-size:1.05rem;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+h1,h2,p{margin:0}
+a{color:inherit}
+button{font-family:inherit;cursor:pointer}
+textarea{font-family:inherit}
+:focus-visible{outline:2px solid var(--plum);outline-offset:3px}
+
+.wrap{max-width:680px;margin-inline:auto;width:100%;padding-inline:24px}
+
+/* ============ Topp ============ */
+.top{
+  padding-top:22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.signature{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:1.3rem;
+  color:var(--ink);
+  text-decoration:none;
+}
+.source{font-size:.9rem;color:var(--quiet)}
+
+/* ============ Kortet ============ */
+main{
+  flex:1;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding-top:24px;
+  padding-bottom:20px;
+}
+.card{
+  width:100%;
+  padding:clamp(28px,5vw,44px);
+  background:var(--surface);
+  border:1px solid var(--hair);
+  border-radius:26px;
+  box-shadow:var(--shadow);
+  border-top:6px solid var(--plum);
+}
+
+.eyebrow{
+  display:inline-block;
+  font-size:.74rem;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+  font-weight:500;
+  color:var(--plum);
+  background:var(--plum-soft);
+  padding:5px 13px;
+  border-radius:999px;
+  margin-bottom:18px;
+}
+
+/* Selve setningen, som på lysbildet */
+.sentence{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-weight:500;
+  font-size:clamp(2rem,6vw,3.1rem);
+  line-height:1.12;
+  color:var(--ink);
+  margin-bottom:10px;
+}
+.sentence .trail{color:var(--quiet)}
+
+.lede{
+  font-size:1.02rem;
+  line-height:1.6;
+  margin-bottom:24px;
+  max-width:52ch;
+}
+
+/* ============ De tre feltene ============ */
+.fields{display:grid;gap:12px}
+.field{
+  display:grid;
+  grid-template-columns:34px 1fr;
+  gap:12px;
+  align-items:start;
+}
+.field-num{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  border:1.5px solid var(--hair-stone);
+  background:transparent;
+  color:var(--quiet);
+  font-size:.92rem;
+  margin-top:7px;
+  transition:background .2s ease,color .2s ease,border-color .2s ease;
+}
+.field.done .field-num{
+  background:var(--plum);
+  border-color:var(--plum);
+  color:#fff;
+}
+.field textarea{
+  width:100%;
+  min-height:86px;
+  padding:14px 17px;
+  background:var(--paper);
+  color:var(--ink);
+  border:1px solid var(--hair);
+  border-radius:16px;
+  font-size:1.04rem;
+  line-height:1.55;
+  resize:vertical;
+  transition:border-color .16s ease;
+}
+.field textarea:focus{border-color:var(--plum)}
+.field textarea::placeholder{color:var(--quiet)}
+
+/* ============ Setningene vist tilbake ============ */
+.readback{
+  margin-top:26px;
+  padding:20px 22px;
+  background:var(--plum-soft);
+  border-left:5px solid var(--plum);
+  border-radius:0 18px 18px 0;
+}
+.readback-label{
+  font-size:.74rem;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  font-weight:500;
+  color:var(--plum);
+  margin-bottom:10px;
+}
+.readback ol{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:grid;
+  gap:10px;
+  counter-reset:rb;
+}
+.readback li{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(1.18rem,3vw,1.45rem);
+  line-height:1.32;
+  color:var(--ink);
+}
+
+.actions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:26px;
+}
+.send-btn{
+  background:var(--plum);
+  color:#fff;
+  border:none;
+  font-size:1.02rem;
+  padding:15px 28px;
+  border-radius:999px;
+  transition:filter .2s ease, opacity .2s ease;
+}
+.send-btn:hover{filter:brightness(1.07)}
+.send-btn:disabled{opacity:.35;cursor:default}
+.send-status{
+  font-size:.95rem;
+  line-height:1.5;
+  color:var(--quiet);
+  flex-basis:100%;
+}
+.send-status.ok{color:#3F6D5F}
+.send-status.bad{color:#9B3B3B}
+.download-btn{
+  background:var(--dark);
+  color:#F7F1F2;
+  border:none;
+  font-size:1.02rem;
+  padding:15px 28px;
+  border-radius:999px;
+  transition:background .2s ease, opacity .2s ease;
+}
+.download-btn:hover{background:var(--ink)}
+.download-btn:disabled{opacity:.35;cursor:default}
+
+/* ============ Lagring ============ */
+.footer-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+  padding-top:8px;
+  padding-bottom:36px;
+  font-size:.92rem;
+  color:var(--quiet);
+}
+.saved{display:flex;align-items:center;gap:8px}
+.saved-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--hair-stone);
+  transition:background .3s ease;
+}
+.saved.on .saved-dot{background:#4F7D72}
+.restart{
+  background:none;
+  border:none;
+  padding:0 0 2px;
+  color:var(--quiet);
+  font-size:.92rem;
+  box-shadow:inset 0 -1px 0 var(--hair-stone);
+}
+.restart:hover{color:var(--plum);box-shadow:inset 0 -1px 0 var(--plum)}
+
+/* ============ Mobil ============ */
+@media (max-width:620px){
+  .wrap{padding-inline:16px}
+  .card{border-radius:20px}
+  .field{grid-template-columns:30px 1fr;gap:10px}
+  .field-num{width:30px;height:30px;font-size:.86rem}
+}
+
+/* ============ Redusert bevegelse ============ */
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="top wrap">
+  <a href="index.html" class="signature">Mari-Ann Letnes</a>
+  <span class="source">Kort øvelse</span>
+</div>
+
+<main class="wrap">
+  <div class="card">
+    <span class="eyebrow">Fullfør setningen</span>
+
+    <p class="sentence">Jeg vet at de er med når <span class="trail">…</span></p>
+
+    <p class="lede">Skriv det som faktisk slår deg når du står i et rom og kjenner at folk er med. Ikke det som høres riktig ut. Tre forskjellige svar, hvis du har tre.</p>
+
+    <div class="fields" id="fields"></div>
+
+    <div id="readbackArea"></div>
+
+    <div class="actions">
+      <button class="send-btn" type="button" id="sendBtn" hidden disabled>Send inn til veggen</button>
+      <button class="download-btn" type="button" id="downloadBtn" disabled>Last ned setningene (.pdf)</button>
+      <p class="send-status" id="sendStatus" hidden></p>
+    </div>
+  </div>
+</main>
+
+<div class="footer-row wrap">
+  <span class="saved" id="saved"><span class="saved-dot" aria-hidden="true"></span><span id="savedText">Lagres i nettleseren på denne enheten</span></span>
+  <button class="restart" type="button" id="restartBtn">Tøm</button>
+</div>
+
+<script>
+  /* ============================================================
+     FELLES VEGG
+     Lim inn /exec-adressen fra Google Apps Script mellom
+     anførselstegnene under. Står den tom, virker siden som før,
+     bare uten innsending.
+     ============================================================ */
+  var VEGG_URL = 'https://script.google.com/macros/s/AKfycbwmu5X3jWBFKPqZOE4ImBOX_cSsQ0OmsMU6nVdb3P66zsKu6t1aqDKoArhVm4N49fqm/exec';
+
+  var STEM = 'Jeg vet at de er med når ';
+  var COUNT = 3;
+  var PLACEHOLDERS = [
+    'Skriv fortsettelsen her …',
+    'Noe annet …',
+    'Og en tredje …'
+  ];
+
+  var sentences = ['', '', ''];
+
+  var fieldsEl    = document.getElementById('fields');
+  var readbackEl  = document.getElementById('readbackArea');
+  var downloadBtn = document.getElementById('downloadBtn');
+  var restartBtn  = document.getElementById('restartBtn');
+  var savedEl     = document.getElementById('saved');
+  var savedText   = document.getElementById('savedText');
+
+  /* ============================================================
+     Lagring. Setningene blir liggende i nettleseren på denne
+     enheten, slik at de kan hentes fram igjen senere i dagen.
+     Ingenting sendes noe sted.
+     ============================================================ */
+  var STORE_KEY = 'fullfor-setningen-v1';
+  var saveTimer = null, flashTimer = null;
+
+  function loadSaved(){
+    try{
+      var raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return;
+      var d = JSON.parse(raw);
+      if (d && Array.isArray(d.sentences)){
+        for (var i = 0; i < COUNT; i++){ sentences[i] = d.sentences[i] || ''; }
+      } else if (d && typeof d.sentence === 'string'){
+        /* Eldre versjon lagret bare én setning. Den blir den første. */
+        sentences[0] = d.sentence;
+      }
+    }catch(e){ /* privat vindu eller blokkert lagring — øvelsen virker uansett */ }
+  }
+
+  function saveSoon(){
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveNow, 400);
+  }
+
+  function saveNow(){
+    try{
+      localStorage.setItem(STORE_KEY, JSON.stringify({ sentences: sentences }));
+      flashSaved();
+    }catch(e){
+      savedText.textContent = 'Kunne ikke lagre i denne nettleseren — last ned før du lukker.';
+    }
+  }
+
+  function flashSaved(){
+    savedEl.classList.add('on');
+    savedText.textContent = 'Lagret';
+    if (flashTimer) clearTimeout(flashTimer);
+    flashTimer = setTimeout(function(){
+      savedEl.classList.remove('on');
+      savedText.textContent = 'Lagres i nettleseren på denne enheten';
+    }, 1600);
+  }
+
+  /* ============ Feltene ============ */
+  function buildFields(){
+    fieldsEl.innerHTML = '';
+    for (var i = 0; i < COUNT; i++){
+      (function(i){
+        var row = document.createElement('div');
+        row.className = 'field';
+        row.id = 'row-' + i;
+
+        var num = document.createElement('span');
+        num.className = 'field-num';
+        num.setAttribute('aria-hidden', 'true');
+        num.textContent = i + 1;
+        row.appendChild(num);
+
+        var ta = document.createElement('textarea');
+        ta.id = 'f-' + i;
+        ta.placeholder = PLACEHOLDERS[i];
+        ta.setAttribute('aria-label', 'Setning ' + (i + 1) + '. Fullfør: ' + STEM);
+        ta.value = sentences[i];
+        ta.addEventListener('input', function(){
+          sentences[i] = ta.value;
+          markRow(i);
+          renderReadback();
+          updateSendBtn();
+          saveSoon();
+        });
+        row.appendChild(ta);
+
+        fieldsEl.appendChild(row);
+        markRow(i);
+      })(i);
+    }
+  }
+
+  function markRow(i){
+    var row = document.getElementById('row-' + i);
+    if (!row) return;
+    row.classList.toggle('done', sentences[i].trim() !== '');
+  }
+
+  /* ============ Setningene vist tilbake, ferdige ============ */
+  function renderReadback(){
+    var written = [];
+    for (var i = 0; i < COUNT; i++){
+      var t = sentences[i].trim();
+      if (t !== '') written.push(t);
+    }
+
+    readbackEl.innerHTML = '';
+    downloadBtn.disabled = (written.length === 0);
+    if (written.length === 0) return;
+
+    var box = document.createElement('div');
+    box.className = 'readback';
+
+    var lab = document.createElement('p');
+    lab.className = 'readback-label';
+    lab.textContent = written.length === 1 ? 'Setningen din' : 'Setningene dine';
+    box.appendChild(lab);
+
+    var ol = document.createElement('ol');
+    written.forEach(function(t){
+      var li = document.createElement('li');
+      li.textContent = STEM + t;
+      ol.appendChild(li);
+    });
+    box.appendChild(ol);
+
+    readbackEl.appendChild(box);
+  }
+
+  /* ============ Nedlasting ============ */
+  function written(){
+    var out = [];
+    for (var i = 0; i < COUNT; i++){
+      var t = sentences[i].trim();
+      if (t !== '') out.push(STEM + t);
+    }
+    return out;
+  }
+
+  function download(){
+    var list = written();
+    if (list.length === 0) return;
+    if (window.jspdf && window.jspdf.jsPDF){ downloadPDF(list); }
+    else { downloadTxt(list); }
+  }
+
+  function downloadPDF(list){
+    var doc = new window.jspdf.jsPDF();
+    var margin = 20;
+    var maxWidth = doc.internal.pageSize.getWidth() - margin * 2;
+    var y = 34;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(120,120,120);
+    doc.text('Fullfør setningen', margin, y);
+    y += 16;
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(16);
+    doc.setTextColor(20,20,20);
+
+    list.forEach(function(s){
+      var lines = doc.splitTextToSize(s, maxWidth);
+      for (var i = 0; i < lines.length; i++){
+        if (y > 275){ doc.addPage(); y = 28; }
+        doc.text(lines[i], margin, y);
+        y += 8;
+      }
+      y += 7;
+    });
+
+    doc.save('fullfor-setningen.pdf');
+  }
+
+  function downloadTxt(list){
+    var blob = new Blob([list.join('\n\n')], { type:'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'fullfor-setningen.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  /* ============================================================
+     Innsending til den felles veggen.
+
+     Enheten får en egen nøkkel som blir liggende i nettleseren.
+     Sender noen inn på nytt, erstattes det forrige bidraget i
+     stedet for å legge seg oppå, slik at ingen står dobbelt.
+     ============================================================ */
+  var sendBtn    = document.getElementById('sendBtn');
+  var sendStatus = document.getElementById('sendStatus');
+  var DEVICE_KEY = 'fullfor-setningen-enhet';
+  var hasSent = false;
+
+  function deviceId(){
+    try{
+      var id = localStorage.getItem(DEVICE_KEY);
+      if (!id){
+        id = 'd-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+        localStorage.setItem(DEVICE_KEY, id);
+      }
+      return id;
+    }catch(e){
+      /* Blokkert lagring: lag en nøkkel som varer så lenge fanen er åpen. */
+      if (!window.__tempDevice){
+        window.__tempDevice = 'd-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
+      }
+      return window.__tempDevice;
+    }
+  }
+
+  function status(text, kind){
+    sendStatus.hidden = (text === '');
+    sendStatus.textContent = text;
+    sendStatus.className = 'send-status' + (kind ? ' ' + kind : '');
+  }
+
+  function updateSendBtn(){
+    if (!VEGG_URL) return;
+    var n = written().length;
+    sendBtn.disabled = (n === 0);
+    sendBtn.textContent = hasSent ? 'Oppdater det du har sendt' : 'Send inn til veggen';
+  }
+
+  function sendToWall(){
+    var list = [];
+    for (var i = 0; i < COUNT; i++){
+      var t = sentences[i].trim();
+      if (t !== '') list.push(t);
+    }
+    if (list.length === 0) return;
+
+    sendBtn.disabled = true;
+    status('Sender …', '');
+
+    fetch(VEGG_URL, {
+      method: 'POST',
+      /* text/plain gjør dette til en enkel forespørsel, slik at
+         nettleseren slipper en forhåndssjekk Apps Script ikke svarer på. */
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ device: deviceId(), sentences: list })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (res && res.ok){
+        hasSent = true;
+        status(list.length === 1
+          ? 'Setningen din er på veggen. Skriver du om, kan du sende inn på nytt.'
+          : 'Setningene dine er på veggen. Skriver du om, kan du sende inn på nytt.', 'ok');
+      } else {
+        status('Fikk ikke sendt. Prøv en gang til.', 'bad');
+      }
+    })
+    .catch(function(){
+      status('Fikk ikke kontakt. Sjekk nettet og prøv igjen.', 'bad');
+    })
+    .then(function(){ updateSendBtn(); });
+  }
+
+  if (VEGG_URL){
+    sendBtn.hidden = false;
+    sendBtn.addEventListener('click', sendToWall);
+  }
+
+  downloadBtn.addEventListener('click', download);
+
+  restartBtn.addEventListener('click', function(){
+    if (written().length > 0 && !confirm('Dette sletter setningene dine på denne enheten. Er du sikker?')) return;
+    sentences = ['', '', ''];
+    try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+    buildFields();
+    renderReadback();
+    updateSendBtn();
+    status('', '');
+    document.getElementById('f-0').focus();
+  });
+
+  loadSaved();
+  buildFields();
+  renderReadback();
+  updateSendBtn();
+</script>
+
+</body>
+</html>
