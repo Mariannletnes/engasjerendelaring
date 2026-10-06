@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Setningsveggen — Mari-Ann Letnes</title>
+<meta name="description" content="Alle setningene som er skrevet i rommet, samlet på én skjerm.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%23332830'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='15' fill='%23F8F4F1' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ Tokens ============ */
+:root{
+  --paper:#FBF9F7;
+  --stone:#EDE7E2;
+  --surface:#FFFFFF;
+  --dark:#332830;
+  --plum:#6E4B57;
+  --plum-soft:#F3ECEE;
+  --ink:#4A3C43;
+  --body:#5E4F55;
+  --quiet:#7E6F74;
+  --hair:#E6DDD6;
+  --hair-stone:#DBD1C9;
+  --fresh:#1B8283;
+}
+
+/* ============ Grunnlag ============ */
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  background:
+    radial-gradient(circle at 80% -10%, rgba(255,255,255,.95), rgba(255,255,255,0) 50%),
+    linear-gradient(180deg,#F7F2EE 0%, var(--stone) 100%);
+  color:var(--body);
+  font-family:'Jost',system-ui,sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+h1,p{margin:0}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--plum);outline-offset:3px}
+
+/* ============ Topp ============ */
+header{
+  flex:none;
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+  padding:26px 36px 18px;
+}
+h1{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-weight:500;
+  font-size:clamp(1.9rem,3.4vw,3rem);
+  line-height:1.05;
+  color:var(--ink);
+}
+h1 .trail{color:var(--quiet)}
+.count{
+  font-size:clamp(.95rem,1.4vw,1.2rem);
+  color:var(--plum);
+  white-space:nowrap;
+}
+.count strong{font-weight:500}
+
+/* ============ Veggen ============ */
+main{
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+  padding:0 36px;
+}
+.wall{
+  height:100%;
+  column-gap:16px;
+  column-fill:auto;
+}
+.wall.s-xl{columns:2;font-size:1.65rem}
+.wall.s-lg{columns:3;font-size:1.3rem}
+.wall.s-md{columns:4;font-size:1.08rem}
+.wall.s-sm{columns:5;font-size:.95rem}
+.wall.s-xs{columns:6;font-size:.84rem}
+
+.line{
+  break-inside:avoid;
+  margin:0 0 10px;
+  padding:12px 15px;
+  background:var(--surface);
+  border:1px solid var(--hair);
+  border-left:4px solid var(--plum-soft);
+  border-radius:0 14px 14px 0;
+  color:var(--ink);
+  line-height:1.4;
+  animation:rise .45s ease-out;
+}
+.line{position:relative}
+.kill{
+  position:absolute;
+  top:4px;
+  right:5px;
+  width:22px;
+  height:22px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--hair-stone);
+  border-radius:50%;
+  background:var(--surface);
+  color:var(--quiet);
+  font-size:.95rem;
+  line-height:1;
+  opacity:0;
+  transition:opacity .15s ease, color .15s ease, border-color .15s ease;
+}
+.line:hover .kill,
+.kill:focus-visible{opacity:1}
+.kill:hover{color:#B4564E;border-color:#B4564E}
+.line.going{opacity:0;transform:scale(.94);transition:opacity .2s ease, transform .2s ease}
+
+.line.fresh{
+  border-left-color:var(--fresh);
+  box-shadow:0 0 0 2px rgba(27,130,131,.16);
+}
+
+/* Tettere kort når det er mange setninger, så flere får plass. */
+.wall.s-md .line{padding:10px 13px;margin-bottom:8px}
+.wall.s-sm .line{padding:8px 12px;margin-bottom:7px}
+.wall.s-xs .line{padding:7px 10px;margin-bottom:6px;line-height:1.35}
+
+@keyframes rise{
+  from{opacity:0;transform:translateY(10px)}
+  to  {opacity:1;transform:none}
+}
+
+/* ============ Tomt, venter, feil ============ */
+.notice{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  gap:12px;
+  padding:30px;
+}
+.notice h2{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-weight:500;
+  font-size:clamp(1.6rem,3vw,2.4rem);
+  color:var(--ink);
+  margin:0;
+}
+.notice p{font-size:1.05rem;color:var(--quiet);max-width:46ch}
+.notice code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:.92rem;
+  background:var(--surface);
+  border:1px solid var(--hair);
+  border-radius:8px;
+  padding:3px 7px;
+  color:var(--ink);
+}
+
+/* ============ Bunnlinje ============ */
+footer{
+  flex:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  padding:14px 36px 20px;
+  font-size:.92rem;
+  color:var(--quiet);
+}
+.live{display:flex;align-items:center;gap:9px}
+.live-dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:var(--fresh);
+  animation:pulse 2.4s ease-in-out infinite;
+}
+.live.paused .live-dot{background:var(--hair-stone);animation:none}
+.live.error .live-dot{background:#B4564E;animation:none}
+@keyframes pulse{
+  0%,100%{opacity:1}
+  50%{opacity:.35}
+}
+.controls{display:flex;gap:10px;align-items:center}
+.ctl{
+  border:1px solid var(--hair-stone);
+  background:var(--surface);
+  color:var(--ink);
+  font-size:.92rem;
+  padding:8px 16px;
+  border-radius:999px;
+  transition:border-color .16s ease;
+}
+.ctl:hover{border-color:var(--plum)}
+
+/* ============ Mindre skjermer ============ */
+@media (max-width:900px){
+  header{padding:20px 18px 14px}
+  main{padding:0 18px}
+  footer{padding:12px 18px 16px}
+  .wall.s-xl,.wall.s-lg{columns:2}
+  .wall.s-md,.wall.s-sm,.wall.s-xs{columns:2}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Jeg vet at de er med når <span class="trail">…</span></h1>
+  <p class="count" id="count"></p>
+</header>
+
+<main>
+  <div class="wall" id="wall"></div>
+</main>
+
+<footer>
+  <span class="live" id="live"><span class="live-dot" aria-hidden="true"></span><span id="liveText">Henter …</span></span>
+  <span class="controls">
+    <button class="ctl" type="button" id="pauseBtn">Frys veggen</button>
+    <button class="ctl" type="button" id="fsBtn">Fullskjerm</button>
+  </span>
+</footer>
+
+<script>
+  /* ============================================================
+     FELLES VEGG
+     Lim inn den samme /exec-adressen her som i
+     fullfor-setningen.html.
+     ============================================================ */
+  var VEGG_URL = 'https://script.google.com/macros/s/AKfycbwmu5X3jWBFKPqZOE4ImBOX_cSsQ0OmsMU6nVdb3P66zsKu6t1aqDKoArhVm4N49fqm/exec';
+
+  /* Samme nøkkel som i skriptet. Den lar deg fjerne en setning fra
+     veggen. Deltakerne ser aldri denne siden. */
+  var ADMIN_KEY = 'hWFwMGCIZwz1whgyuuvRicFY';
+
+  var STEM = 'Jeg vet at de er med når ';
+  var POLL_MS = 5000;
+  var MAX_SHOWN = 120;
+
+  var wallEl   = document.getElementById('wall');
+  var countEl  = document.getElementById('count');
+  var liveEl   = document.getElementById('live');
+  var liveText = document.getElementById('liveText');
+  var pauseBtn = document.getElementById('pauseBtn');
+  var fsBtn    = document.getElementById('fsBtn');
+
+  var paused = false;
+  var timer = null;
+  var seen = {};          /* setninger vi allerede har vist */
+  var firstLoadDone = false;
+
+  function notice(title, text, code){
+    wallEl.className = 'wall';
+    wallEl.innerHTML = '';
+    var box = document.createElement('div');
+    box.className = 'notice';
+
+    var h = document.createElement('h2');
+    h.textContent = title;
+    box.appendChild(h);
+
+    var p = document.createElement('p');
+    p.textContent = text;
+    box.appendChild(p);
+
+    if (code){
+      var c = document.createElement('p');
+      var el = document.createElement('code');
+      el.textContent = code;
+      c.appendChild(el);
+      box.appendChild(c);
+    }
+    wallEl.appendChild(box);
+  }
+
+  /* Jo flere setninger, jo mindre skrift og flere spalter. */
+  function sizeClass(n){
+    if (n <= 15) return 's-xl';
+    if (n <= 35) return 's-lg';
+    if (n <= 70) return 's-md';
+    if (n <= 130) return 's-sm';
+    return 's-xs';
+  }
+
+  /* Spaltene har fast høyde. Det som ikke får plass, flyter ut i
+     spalter utenfor skjermen og blir usynlig. Derfor fjerner vi de
+     eldste til innholdet faktisk står innenfor. */
+  function overflowing(){
+    return wallEl.scrollWidth > wallEl.clientWidth + 1;
+  }
+
+  function trimToFit(){
+    var guard = 0;
+    while (wallEl.children.length > 1 && overflowing() && guard < 400){
+      wallEl.removeChild(wallEl.lastElementChild);
+      guard++;
+    }
+    return wallEl.children.length;
+  }
+
+  function paint(items){
+    var total = items.length;
+
+    if (total === 0){
+      notice('Ingen setninger ennå', 'De dukker opp her etter hvert som folk sender dem inn.');
+      countEl.textContent = '';
+      return;
+    }
+
+    /* Nyeste først. */
+    var ordered = items.slice().sort(function(a, b){ return (b.t || 0) - (a.t || 0); });
+    var candidates = ordered.slice(0, MAX_SHOWN);
+
+    wallEl.className = 'wall ' + sizeClass(total);
+    wallEl.innerHTML = '';
+
+    candidates.forEach(function(item){
+      var p = document.createElement('p');
+      var isNew = firstLoadDone && !seen[item.s];
+      p.className = 'line' + (isNew ? ' fresh' : '');
+
+      /* Stammen står i overskriften over veggen, så kortene viser
+         bare fortsettelsen. Det gjør forskjellene lettere å se. */
+      var txt = document.createElement('span');
+      txt.textContent = item.s;
+      p.appendChild(txt);
+
+      /* Krysset dukker opp når du holder musa over kortet. */
+      var kill = document.createElement('button');
+      kill.type = 'button';
+      kill.className = 'kill';
+      kill.textContent = '×';
+      kill.title = 'Fjern fra veggen';
+      kill.setAttribute('aria-label', 'Fjern denne setningen fra veggen');
+      (function(text, card){
+        kill.addEventListener('click', function(ev){
+          ev.stopPropagation();
+          removeFromWall(text, card);
+        });
+      })(item.s, p);
+      p.appendChild(kill);
+
+      wallEl.appendChild(p);
+    });
+
+    var shownCount = trimToFit();
+
+    /* Merk alt som sett, slik at bare virkelig nye lyser neste gang. */
+    seen = {};
+    items.forEach(function(item){ seen[item.s] = true; });
+    firstLoadDone = true;
+
+    countEl.innerHTML = '<strong>' + total + '</strong> ' +
+      (total === 1 ? 'setning' : 'setninger') +
+      (total > shownCount ? ' · viser de ' + shownCount + ' nyeste' : '');
+  }
+
+  /* Fjerner kortet med én gang på skjermen, og ber så skriptet flytte
+     setningen til arket «Fjernet». Den er altså ikke slettet. */
+  function removeFromWall(text, card){
+    card.classList.add('going');
+    setTimeout(function(){
+      if (card.parentNode) card.parentNode.removeChild(card);
+    }, 200);
+
+    fetch(VEGG_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'hide', key: ADMIN_KEY, text: text })
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(res){
+      if (!(res && res.ok)){
+        setLive('error', 'Fikk ikke fjernet setningen — slett raden i regnearket');
+      }
+    })
+    .catch(function(){
+      setLive('error', 'Fikk ikke fjernet setningen — slett raden i regnearket');
+    });
+  }
+
+  function setLive(state, text){
+    liveEl.className = 'live' + (state ? ' ' + state : '');
+    liveText.textContent = text;
+  }
+
+  function poll(){
+    if (paused) return;
+    fetch(VEGG_URL + (VEGG_URL.indexOf('?') > -1 ? '&' : '?') + 'action=list&t=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        if (res && res.ok){
+          paint(res.items || []);
+          setLive('', 'Oppdaterer hvert femte sekund');
+        } else {
+          setLive('error', 'Skriptet svarte med en feil');
+        }
+      })
+      .catch(function(){
+        setLive('error', 'Ingen kontakt med skriptet — prøver igjen');
+      });
+  }
+
+  function start(){
+    if (timer) clearInterval(timer);
+    poll();
+    timer = setInterval(poll, POLL_MS);
+  }
+
+  pauseBtn.addEventListener('click', function(){
+    paused = !paused;
+    pauseBtn.textContent = paused ? 'Start oppdatering' : 'Frys veggen';
+    if (paused){
+      setLive('paused', 'Frosset — nye setninger kommer ikke inn');
+    } else {
+      setLive('', 'Oppdaterer hvert femte sekund');
+      poll();
+    }
+  });
+
+  fsBtn.addEventListener('click', function(){
+    if (document.fullscreenElement){
+      document.exitFullscreen();
+    } else if (document.documentElement.requestFullscreen){
+      document.documentElement.requestFullscreen();
+    }
+  });
+
+  document.addEventListener('fullscreenchange', function(){
+    fsBtn.textContent = document.fullscreenElement ? 'Avslutt fullskjerm' : 'Fullskjerm';
+  });
+
+  /* Endret vindu eller fullskjerm endrer hvor mye som får plass. */
+  var resizeTimer = null;
+  window.addEventListener('resize', function(){
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){ if (!paused) poll(); }, 250);
+  });
+
+  /* Mellomrom fryser og starter veggen, så du slipper å treffe knappen. */
+  document.addEventListener('keydown', function(e){
+    if (e.code === 'Space' && e.target === document.body){
+      e.preventDefault();
+      pauseBtn.click();
+    }
+  });
+
+  if (!VEGG_URL){
+    notice(
+      'Veggen er ikke koblet til ennå',
+      'Lim inn nettadressen fra Google Apps Script i linjen som begynner med VEGG_URL, øverst i skriptet på denne siden.',
+      "var VEGG_URL = 'https://script.google.com/…/exec';"
+    );
+    setLive('paused', 'Ikke koblet til');
+  } else {
+    start();
+  }
+</script>
+
+</body>
+</html>
