@@ -491,6 +491,7 @@ main{
     <h1>Hobbyoppgaven</h1>
     <p>Du har et innhold du kjenner godt. Den andre kjenner det kanskje ikke ennå. Poenget er ikke hobbyen — poenget er hvordan et innhold kan åpnes for en annen.</p>
     <p>Du prøver den samme hobbyen to ganger: først som formidling, så som dialog. Med hver sin partner, så ingen hører det samme innholdet to ganger.</p>
+    <p class="premise-time">Hele øvelsen tar omtrent et kvarter.</p>
   </div>
 </div>
 
@@ -553,7 +554,7 @@ var steps = [
     kicker:"Hver for dere",
     title:"Tenk på en hobby",
     desc:"Tenk stille på en hobby eller interesse du selv er ekte engasjert i — ikke noe som høres bra ut, men noe du faktisk brenner for.",
-    seconds:60
+    seconds:45
   },
   {
     kicker:"Runde 1",
@@ -561,11 +562,11 @@ var steps = [
     title:"A forteller",
     desc:"Fortell om hobbyen din. Du har ordet alene.",
     roles:{
-      a:"Fortell. Du har to minutter, og du har dem for deg selv.",
+      a:"Fortell. Du har halvannet minutt, og du har det for deg selv.",
       b:"Bare lytt. Ingen spørsmål, ingen svar. Merk hva som skjer i deg."
     },
     speaker:"a",
-    seconds:120
+    seconds:90
   },
   {
     kicker:"Runde 1",
@@ -574,16 +575,16 @@ var steps = [
     desc:"Samme form, motsatt vei.",
     roles:{
       a:"Bare lytt. Ingen spørsmål, ingen svar. Merk hva som skjer i deg.",
-      b:"Fortell. Du har to minutter, og du har dem for deg selv."
+      b:"Fortell. Du har halvannet minutt, og du har det for deg selv."
     },
     speaker:"b",
-    seconds:120
+    seconds:90
   },
   {
     kicker:"Bytt partner",
     title:"Ett ord hver, så videre",
     desc:"Si ett ord hver om hvordan det var å lytte uten å kunne si noe. Ikke diskuter det. Reis dere så og finn en ny partner — en som ikke har hørt hobbyen din. Bli enige om hvem som er A denne gangen.",
-    seconds:90
+    seconds:150
   },
   {
     kicker:"Runde 2",
@@ -597,7 +598,7 @@ var steps = [
     speaker:"a",
     bothOn:true,
     prompts:dialogQuestions,
-    seconds:180
+    seconds:150
   },
   {
     kicker:"Runde 2",
@@ -611,7 +612,7 @@ var steps = [
     speaker:"b",
     bothOn:true,
     prompts:dialogQuestions,
-    seconds:180
+    seconds:150
   },
   {
     kicker:"Hver for dere",
@@ -623,13 +624,13 @@ var steps = [
       "Hva gjorde du med det den andre sa?",
       "Hva fikk den andre mulighet til å spørre om, utfordre eller påvirke?"
     ],
-    seconds:180
+    seconds:120
   },
   {
     kicker:"I paret",
     title:"Del med hverandre",
     desc:"Fortell hverandre hva dere la merke til. Ble det forskjell på runde 1 og runde 2, og hva besto forskjellen i?",
-    seconds:120
+    seconds:90
   },
   {
     kicker:"Til slutt",
